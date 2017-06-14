@@ -1,0 +1,7 @@
+#define INTERVAL 3000
+
+#define RGB_LED_BRIGHTNESS 32
+
+#define DEVICE_ID "AZ3166"
+
+#define CONNECTION_STRING ""
