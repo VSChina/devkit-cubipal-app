@@ -16,10 +16,6 @@ static int msgStart;
 static char msgBody[2048];
 static int msgBodyLen;
 
-//Please replace with your repo url
-const char REPO_API_URL[] = "https://api.github.com/repos/vschina/devkit-cubipal-demo";
-const char REPO_URL[] = "https://github.com/vschina/devkit-cubipal-demo";
-
 //DigiCert High Assurance EV Root CA
 const char GITHUB_CERT[] = 
 "-----BEGIN CERTIFICATE-----\r\n"
@@ -86,7 +82,7 @@ void getRepoIssues()
 
     bool success = false;
 
-    HTTPClient *client = new HTTPClient(GITHUB_CERT, HTTP_GET, REPO_API_URL);
+    HTTPClient *client = new HTTPClient(GITHUB_CERT, HTTP_GET, GITHUB_REPO_API_URL);
     client->set_header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64)");
     const Http_Response *response = client->send();
     if(response != NULL)
@@ -98,7 +94,7 @@ void getRepoIssues()
             (countObject = json_object_object_get(jsonObject, "open_issues_count")) != NULL &&
             (issueCount = json_object_get_int(countObject)) >= 0)
         {
-            sprintf(msgBody, "There're total %d open issues in repo %s", issueCount, REPO_URL);
+            sprintf(msgBody, "There're total %d open issues in repo %s", issueCount, GITHUB_REPO_URL);
             msgBodyLen = strlen(msgBody);
             msgStart = 0;
             displayIssue();
@@ -108,7 +104,7 @@ void getRepoIssues()
     if(!success)
     {
         Screen.clean();
-        Screen.print("Failed to get issues.");
+        Screen.print("Failed to get repo's issues.", true);
     }
     delete client;
 }
@@ -131,7 +127,6 @@ static IOTHUBMESSAGE_DISPOSITION_RESULT c2dMessageCallback(IOTHUB_MESSAGE_HANDLE
         memcpy(msgBody, buffer, size);
         msgBodyLen = size;
         LogInfo("Receive C2D message: %s", msgBody);
-        Serial.println(msgBody);
         displayIssue();
         blinkLED();
         return IOTHUBMESSAGE_ACCEPTED;
@@ -140,7 +135,6 @@ static IOTHUBMESSAGE_DISPOSITION_RESULT c2dMessageCallback(IOTHUB_MESSAGE_HANDLE
 
 void iothubInit()
 {
-    srand((unsigned int)time(NULL));
     msgStart = msgBodyLen = 0;
     msgBody[0] = 0;
 
@@ -169,7 +163,7 @@ void iothubInit()
     }
 }
 
-void iothubLoop(void)
+void iothubLoop()
 {
     if(digitalRead(USER_BUTTON_A) == LOW)
     {
