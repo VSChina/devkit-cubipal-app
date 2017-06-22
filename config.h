@@ -1,7 +1,4 @@
-#define INTERVAL 3000
-
 #define RGB_LED_BRIGHTNESS 32
 
-#define DEVICE_ID "AZ3166"
-
+//Need to specify device connection string here: "HostName=**;DeviceId=**;SharedAccessKey=**"
 #define CONNECTION_STRING ""
