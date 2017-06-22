@@ -6,7 +6,7 @@
 
 #include "iothub_client_ll.h"
 
-void iothubInit(void);
-void iothubLoop(void);
+void iothubInit();
+void iothubLoop();
 
 #endif /* UTILITY_H */

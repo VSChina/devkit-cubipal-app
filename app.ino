@@ -32,7 +32,7 @@ void setup()
         return;
     }
 
-    Serial.begin(9600);
+    Serial.begin(115200);
     iothubInit();
     Serial.println("Listening cloud to device message:");
 }
@@ -40,5 +40,5 @@ void setup()
 void loop()
 {
     iothubLoop();
-    delay(10);
+    delay(100);
 }
